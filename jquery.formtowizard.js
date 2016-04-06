@@ -1,16 +1,9 @@
 /*
+   Form To Wizard https://github.com/artoodetoo/formToWizard
 
-   Form To Wizard originally created by Janko
-
-   Following New features added by iFadey:
-   
-=> show/hide progress option
-=> show/hide step numbers
-=> validation callback option
-=> rename next, previous button name
-=> goto step command
-=> next step command
-=> previous step command
+   Originally created by Janko.
+   Featured iFadey.
+   Polished by artoodetoo.
 
 */
 
@@ -22,6 +15,8 @@
                 showProgress      : true,
                 showStepNo        : true,
                 validateBeforeNext: null,
+                select            : null,
+                progress          : null,
                 nextBtnName       : 'Next >',
                 prevBtnName       : '< Back'
             }, options);
@@ -49,7 +44,7 @@
             if( typeof( options.validateBeforeNext ) !== "function" )
                 options.validateBeforeNext = function() { return true; };
             
-            if( options.showProgress ) {
+            if( options.showProgress && typeof(options.progress) !== "function") {
                 if( options.showStepNo )
                     $(element).before("<ul id='steps' class='steps'></ul>");
                 else
@@ -62,7 +57,7 @@
                 $(this).wrap("<div id='step" + i + "' class='stepDetails'></div>");
                 $(this).append("<p id='step" + i + "commands'></p>");
 
-                if( options.showProgress ) {
+                if( options.showProgress && typeof(options.progress) !== "function") {
                     if( options.showStepNo )
                         $("#steps").append("<li id='stepDesc" + i + "'>Step " + (i + 1) + "<span>" + $(this).find("legend").html() + "</span></li>");
                     else
@@ -145,7 +140,7 @@
             $("#" + stepName + "commands").append("<a href='#' id='" + stepName + "Next' class='btn next'>" + options.nextBtnName + "</a>");
 
             $("#" + stepName + "Next").bind( "click", function(e) {
-                if( options.validateBeforeNext() === true ) {
+                if( options.validateBeforeNext(element, $("#" + stepName)) === true ) {
                     $("#" + stepName).hide();
                     $("#step" + (i + 1)).show();
                     //if (i + 2 == count)
@@ -157,9 +152,15 @@
         }
 
         function selectStep(i) {
-            if( options.showProgress ) {
+            if ( typeof(options.progress) === "function" ) {
+                options.progress(i, count);
+            } else if( options.showProgress ) {
                 $("#steps li").removeClass("current");
                 $("#stepDesc" + i).addClass("current");
+            }
+
+            if( options.select ) {
+                options.select(element, $('#step'+i));
             }
         }
         /******************** End Private Methods ********************/
