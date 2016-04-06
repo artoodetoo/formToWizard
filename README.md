@@ -17,8 +17,8 @@ I'd like to make it neat, replace hardcoded things to callbacks and options. And
 
 ## Live examples in jsfiddle
 
-[example1](https://jsfiddle.net/artoodetoo/m7rmgvfy/embedded/result/)
-
+- [example1](https://jsfiddle.net/artoodetoo/m7rmgvfy/embedded/result/)
+- [example 2](https://jsfiddle.net/artoodetoo/yga9sjwa/embedded/result/)
 
 [1]: http://www.jankoatwarpspeed.com/turn-any-webform-into-a-powerful-wizard-with-jquery-formtowizard-plugin/
 [2]: http://www.ifadey.com/2012/06/form-to-wizard-jquery-plugin/
