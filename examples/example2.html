@@ -1,56 +1,106 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!doctype html>
+
+<html lang="en">
+
 <head>
-    <title>Turn plain webform into a powerful wizard with jQuery</title>
-    <style type="text/css">
+    <title>Fully Customized with Form Validation | Form to Wizard</title>
+    
+    <style>
         body { font-family:Lucida Sans, Arial, Helvetica, Sans-Serif; font-size:13px; margin:20px;}
-        #main { width:960px; margin: 0px auto; border:solid 1px #b2b3b5; -moz-border-radius:10px; padding:20px; background-color:#f6f6f6;}
         #header { text-align:center; border-bottom:solid 1px #b2b3b5; margin: 0 0 20px 0; }
         fieldset { border:none; width:320px;}
         legend { font-size:18px; margin:0px; padding:10px 0px; color:#b0232a; font-weight:bold;}
         label { display:block; margin:15px 0 5px;}
         input[type=text], input[type=password] { width:300px; padding:5px; border:solid 1px #000;}
-        .prev, .next { background-color:#b0232a; padding:5px 10px; color:#fff; text-decoration:none;}
-        .prev:hover, .next:hover { background-color:#000; text-decoration:none;}
-        .prev { float:left;}
-        .next { float:right;}
-        #steps { list-style:none; width:100%; overflow:hidden; margin:0px; padding:0px;}
-        #steps li {font-size:24px; float:left; padding:10px; color:#b0b1b3;}
-        #steps li span {font-size:11px; display:block;}
-        #steps li.current { color:#000;}
-        #makeWizard { background-color:#b0232a; color:#fff; padding:5px 10px; text-decoration:none; font-size:18px;}
-        #makeWizard:hover { background-color:#000;}
+        
+        button, .prev, .next { background-color:#b0232a; padding:5px 10px; color:#fff; text-decoration:none;}
+        button:hover, .prev:hover, .next:hover { background-color:#000; text-decoration:none;}
+
+        button { border: none; }
+
+        #controls { background: #eee; box-shadow: 0 0 16px #999; height: 30px; position: fixed; padding: 10px; top: 0; left: 0; width: 100%; z-index: 1 }
+        #controls h1 { color: #666; display: inline-block; margin: 0 0 8px 0 }
+        #controls input[type=text] { border-color: #999; margin: 0 25px; width: 120px }
+        
+        #steps { margin: 80px 0 0 0 }
     </style>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../jquery.formtowizard.js"></script>
-    <script type="text/javascript">
-        function MakeWizard(){
-            $("#SignupForm").formToWizard({ submitButton: 'SaveAccount' })
-        }
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css" />
+    <style>
+        .prev{float:left}
+        .next{float:right}
+        .steps{list-style:none;width:100%;overflow:hidden;margin:0;padding:0}
+        .steps li{color:#b0b1b3;font-size:24px;float:left;padding:10px;transition:all .3s;-moz-transition:all .3s;-webkit-transition:all .3s;-o-transition:all .3s}
+        .steps li span{font-size:11px;display:block}
+        .steps li.current{color:#000}
+        .breadcrumb{height:37px}
+        .breadcrumb li{background:#eee;font-size:14px}
+        .breadcrumb li.current:after{border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:6px solid #666;content:' ';position:absolute;top:0;right:-6px}
+        .breadcrumb li.current{background:#666;color:#eee;position:relative}
+        .breadcrumb li:last-child:after{border:none}
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="../jquery.formtowizard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-en.min.js"></script>
+    
+    <script>
+        $( function() {
+            var $signupForm = $( '#SignupForm' );
+            
+            $signupForm.validationEngine();
+            
+            $signupForm.formToWizard({
+                submitButton: 'SaveAccount',
+                showProgress: true, //default value for showProgress is also true
+                nextBtnName: 'Forward >>',
+                prevBtnName: '<< Previous',
+                showStepNo: false,
+                validateBeforeNext: function() {
+                    return $signupForm.validationEngine( 'validate' );
+                }
+            });
+            
+            
+            $( '#txt_stepNo' ).change( function() {
+                $signupForm.formToWizard( 'GotoStep', $( this ).val() );
+            });
+            
+            $( '#btn_next' ).click( function() {
+                $signupForm.formToWizard( 'NextStep' );
+            });
+            
+            $( '#btn_prev' ).click( function() {
+                $signupForm.formToWizard( 'PreviousStep' );
+            });
+        });
     </script>
+    
 </head>
+
 <body>
-    <div id="main">
-        <div id="header">
-            <!-- <img src="logo.jpg" alt="JankoAtWrpSpeed demos" /> -->
-            <h3>Demo for <a href="http://www.jankoatwarpspeed.com/post/2009/09/28/webform-wizard-jquery.aspx">Turn any webform into a powerful wizard with jQuery</a></h3>
-            <p><a id="makeWizard" href="#" onclick="MakeWizard()">Click here to turn this webform into a wizrd.</a>
-            <span id="info" style="display:none;">You don't have to fill the form, really. Just click on Next and Back to see the demo.</span></p>
-        </div>
-        <form id="SignupForm" action="">
+    <section id="controls">
+        <h1>Controls: </h1>
+        <input id="txt_stepNo" type="text" placeholder="Enter Step No..." />
+        <button id="btn_next">Next [External]</button>
+        <button id="btn_prev">Previous [External]</button>
+    </section>
+
+    <form id="SignupForm" action="">
         <fieldset>
             <legend>Account information</legend>
             <label for="Name">Name</label>
-            <input id="Name" type="text" />
+            <input id="Name" type="text" class="validate[required]" />
             <label for="Email">Email</label>
-            <input id="Email" type="text" />
+            <input id="Email" type="text" class="validate[custom[email],required]" />
             <label for="Password">Password</label>
             <input id="Password" type="password" />
         </fieldset>
         <fieldset>
             <legend>Company information</legend>
             <label for="CompanyName">Company Name</label>
-            <input id="CompanyName" type="text" />
+            <input id="CompanyName" type="text" class="validate[required]" />
             <label for="Website">Website</label>
             <input id="Website" type="text" />
             <label for="CompanyEmail">CompanyEmail</label>
@@ -158,7 +208,7 @@
                 <option value="CU">Cuba</option>
                 <option value="CY">Cyprus</option>
                 <option value="CZ">Czech Republic</option>
-                <option value="CI">Côte D'ivoire (Ivory Coast)</option>
+                <option value="CI">Ivory Coast</option>
                 <option value="DK">Denmark</option>
                 <option value="DJ">Djibouti</option>
                 <option value="DM">Dominica</option>
@@ -277,7 +327,7 @@
                 <option value="RO">Romania</option>
                 <option value="RU">Russian Federation</option>
                 <option value="RW">Rwanda</option>
-                <option value="RE">Réunion</option>
+                <option value="RE">Runion</option>
                 <option value="LC">Saint Lucia</option>
                 <option value="WS">Samoa</option>
                 <option value="SM">San Marino</option>
@@ -342,7 +392,6 @@
         <p>
             <input id="SaveAccount" type="button" value="Submit form" />
         </p>
-        </form>
-    </div>
+    </form>
 </body>
 </html>
