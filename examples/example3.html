@@ -24,7 +24,7 @@
         .next{float:right}
 
         .error { color: #b33; }
-        #progress { position: relative; height: 5px; background-color: #f2f7f7; margin-bottom: 20px; }
+        #progress { position: relative; height: 5px; background-color: #d2d7d7; margin-bottom: 20px; }
         #progress-complete { border: 0; position: absolute; height: 5px; min-width: 10px; background-color: #f90; transition: width .2s ease-in-out; }
 
     </style>
@@ -47,7 +47,7 @@
                     var stepIsValid = true;
                     var validator = form.validate();
                     $(":input", step).each( function(index) {
-                        var xy = validator.element($(this));
+                        var xy = validator.element(this);
                         stepIsValid = stepIsValid && (typeof xy == 'undefined' || xy);
                     });
                     return stepIsValid;

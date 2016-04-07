@@ -1,9 +1,10 @@
 /*
    Form To Wizard https://github.com/artoodetoo/formToWizard
+   Free to use under MIT license.
 
    Originally created by Janko.
-   Featured iFadey.
-   Polished by artoodetoo.
+   Featured by iFadey.
+   Polishing by artoodetoo.
 
 */
 
