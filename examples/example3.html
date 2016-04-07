@@ -4,28 +4,17 @@
 
 <head>
     <title>Form to Wizard with jQuery Validation plugin</title>
-    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <style>
-        body { font-family:Lucida Sans, Arial, Helvetica, Sans-Serif; font-size:13px; margin:20px;}
-        #header { text-align:center; border-bottom:solid 1px #b2b3b5; margin: 0 0 20px 0; }
-        fieldset { border:none; width:320px;}
-        legend { font-size:18px; margin:0px; padding:10px 0px; color:#b0232a; font-weight:bold;}
-        label { display:block; margin:15px 0 5px;}
-        input[type=text], input[type=password], input[type=email] { width:300px; padding:5px; border:solid 1px #000;}
-        
-        button, .prev, .next { background-color:#b0232a; padding:5px 10px; color:#fff; text-decoration:none;}
-        button:hover, .prev:hover, .next:hover { background-color:#000; text-decoration:none;}
-
-        button { border: none; }
-
+        .wrap { max-width: 980px; margin: 10px auto 0; }
         #steps { margin: 80px 0 0 0 }
-
-        .prev{float:left}
-        .next{float:right}
-
+        .commands { overflow: hidden; margin-top: 30px; }
+        .prev {float:left}
+        .next, .submit {float:right}
         .error { color: #b33; }
-        #progress { position: relative; height: 5px; background-color: #d2d7d7; margin-bottom: 20px; }
-        #progress-complete { border: 0; position: absolute; height: 5px; min-width: 10px; background-color: #f90; transition: width .2s ease-in-out; }
+        #progress { position: relative; height: 5px; background-color: #eee; margin-bottom: 20px; }
+        #progress-complete { border: 0; position: absolute; height: 5px; min-width: 10px; background-color: #337ab7; transition: width .2s ease-in-out; }
 
     </style>
     
@@ -37,23 +26,24 @@
         $( function() {
             var $signupForm = $( '#SignupForm' );
             
-            $signupForm.validate();
+            $signupForm.validate({errorElement: 'em'});
             
             $signupForm.formToWizard({
                 submitButton: 'SaveAccount',
-                nextBtnName: 'Forward >>',
-                prevBtnName: '<< Previous',
+                nextBtnClass: 'btn btn-primary next',
+                prevBtnClass: 'btn btn-default prev',
+                buttonTag:    'button',
                 validateBeforeNext: function(form, step) {
                     var stepIsValid = true;
                     var validator = form.validate();
-                    $(":input", step).each( function(index) {
+                    $(':input', step).each( function(index) {
                         var xy = validator.element(this);
                         stepIsValid = stepIsValid && (typeof xy == 'undefined' || xy);
                     });
                     return stepIsValid;
                 },
                 progress: function (i, count) {
-                    $("#progress-complete").width(''+(i/count*100)+'%');
+                    $('#progress-complete').width(''+(i/count*100)+'%');
                 }
             });
         });
@@ -62,69 +52,102 @@
 </head>
 
 <body>
+<div class="row wrap"><div class="col-lg-12">
+
     <div id='progress'><div id='progress-complete'></div></div>
 
     <form id="SignupForm" action="">
         <fieldset>
             <legend>Account information</legend>
+            <div class="form-group">
             <label for="Name">Name</label>
-            <input id="Name" type="text" required />
+            <input id="Name" type="text" class="form-control" required />
+            </div>
+            <div class="form-group">
             <label for="Email">Email</label>
-            <input id="Email" type="email" required />
+            <input id="Email" type="email" class="form-control" required />
+            </div>
+            <div class="form-group">
             <label for="Password">Password</label>
-            <input id="Password" type="password" />
+            <input id="Password" type="password" class="form-control" />
+            </div>
         </fieldset>
+
         <fieldset>
             <legend>Company information</legend>
+            <div class="form-group">
             <label for="CompanyName">Company Name</label>
-            <input id="CompanyName" type="text" required />
+            <input id="CompanyName" type="text" class="form-control" required />
+            </div>
+            <div class="form-group">
             <label for="Website">Website</label>
-            <input id="Website" type="text" />
+            <input id="Website" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
             <label for="CompanyEmail">CompanyEmail</label>
-            <input id="CompanyEmail" type="text" />
+            <input id="CompanyEmail" type="text" class="form-control" />
+            </div>
         </fieldset>
-        <fieldset>
+
+        <fieldset class="form-horizontal" role="form">
             <legend>Billing information</legend>
-            <label for="NameOnCard">Name on Card</label>
-            <input id="NameOnCard" type="text" />
-            <label for="CardNumber">Card Number</label>
-            <input id="CardNumber" type="text" />
-            <label for="CreditcardMonth">Expiration</label>
-            <select id="CreditcardMonth">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-            <select id="CreditcardYear">
-                <option value="2009">2009</option>
-                <option value="2010">2010</option>
-                <option value="2011">2011</option>
-                <option value="2012">2012</option>
-                <option value="2013">2013</option>
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-            </select>        
-            <label for="Address1">Address 1</label>
-            <input id="Address1" type="text" />
-            <label for="Address2">Address 2</label>
-            <input id="Address2" type="text" />
-            <label for="City">City</label>
-            <input id="City" type="text" />
-            <label for="City">City</label>
-            <select id="Country">
+            <div class="form-group">
+            <label for="NameOnCard" class="col-sm-2 control-label">Name on Card</label>
+            <div class="col-sm-10"><input id="NameOnCard" type="text" class="form-control" /></div>
+            </div>
+            <div class="form-group">
+            <label for="CardNumber" class="col-sm-2 control-label">Card Number</label>
+            <div class="col-sm-10"><input id="CardNumber" type="text" class="form-control" /></div>
+            </div>
+            <div class="form-group">
+            <label for="CreditcardMonth" class="col-sm-2 control-label">Expiration</label>
+            <div class="col-sm-10"><div class="row">
+                <div class="col-xs-3">
+                <select id="CreditcardMonth" class="form-control col-sm-2">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                </div>
+                <div class="col-xs-3">
+                <select id="CreditcardYear" class="form-control">
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                </select>        
+                </div>
+            </div></div>
+            </div>
+            <div class="form-group">
+            <label for="Address1" class="col-sm-2 control-label">Address 1</label>
+            <div class="col-sm-10"><input id="Address1" type="text" class="form-control" /></div>
+            </div>
+            <div class="form-group">
+            <label for="Address2" class="col-sm-2 control-label">Address 2</label>
+            <div class="col-sm-10"><input id="Address2" type="text" class="form-control" /></div>
+            </div>
+            <div class="form-group">
+            <label for="Zip" class="col-sm-2 control-label">ZIP</label>
+            <div class="col-sm-4"><input id="Zip" type="text" class="form-control" /></div>
+            <label for="Country" class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-4"><select id="Country" class="form-control">
 			    <option value="CA">Canada</option>
                 <option value="US">United States of America</option>
                 <option value="GB">United Kingdom (Great Britain)</option>
@@ -365,10 +388,14 @@
                 <option value="ZM">Zambia</option>
                 <option value="ZW">Zimbabwe</option>
             </select>
+            </div>
         </fieldset>
         <p>
-            <input id="SaveAccount" type="button" value="Submit form" />
+            <button id="SaveAccount" class="btn btn-primary submit">Submit form</button>
         </p>
     </form>
+
+</div></div>
+
 </body>
 </html>

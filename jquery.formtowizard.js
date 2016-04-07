@@ -12,14 +12,17 @@
     $.fn.formToWizard = function( options, cmdParam1 ) {
         if( typeof options !== 'string' ) {
             options = $.extend({
-                submitButton      : "",
-                showProgress      : true,
-                showStepNo        : true,
+                submitButton:       '',
+                showProgress:       true,
+                showStepNo:         true,
                 validateBeforeNext: null,
-                select            : null,
-                progress          : null,
-                nextBtnName       : 'Next >',
-                prevBtnName       : '< Back'
+                select:             null,
+                progress:           null,
+                nextBtnName:        'Next &gt;',
+                prevBtnName:        '&lt; Back',
+                buttonTag:          'a',
+                nextBtnClass:       'btn next',
+                prevBtnClass:       'btn prev'
             }, options);
         }
         
@@ -55,8 +58,8 @@
             
             
             steps.each(function(i) {
-                $(this).wrap("<div id='step" + i + "' class='stepDetails'></div>");
-                $(this).append("<p id='step" + i + "commands'></p>");
+                $(this).wrap('<div id="step' + i + '" class="stepDetails"></div>');
+                $(this).append('<p id="step' + i + 'commands" class="commands"></p>');
 
                 if( options.showProgress && typeof(options.progress) !== "function") {
                     if( options.showStepNo )
@@ -125,8 +128,12 @@
         
         /******************** Private Methods ********************/
         function createPrevButton(i) {
-            var stepName = "step" + i;
-            $("#" + stepName + "commands").append("<a href='#' id='" + stepName + "Prev' class='btn prev'>" + options.prevBtnName + "</a>");
+            var stepName = 'step' + i;
+            $('#' + stepName + 'commands').append(
+                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Prev" class="' + options.prevBtnClass + '">' + 
+                options.prevBtnName + 
+                '</' + options.buttonTag + '>'
+            );
 
             $("#" + stepName + "Prev").bind("click", function(e) {
                 $("#" + stepName).hide();
@@ -137,8 +144,11 @@
         }
 
         function createNextButton(i) {
-            var stepName = "step" + i;
-            $("#" + stepName + "commands").append("<a href='#' id='" + stepName + "Next' class='btn next'>" + options.nextBtnName + "</a>");
+            var stepName = 'step' + i;
+            $('#' + stepName + 'commands').append(
+                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Next" class="' + options.nextBtnClass + '">' + 
+                options.nextBtnName + 
+                '</' + options.buttonTag + '>');
 
             $("#" + stepName + "Next").bind( "click", function(e) {
                 if( options.validateBeforeNext(element, $("#" + stepName)) === true ) {
@@ -165,8 +175,7 @@
             }
         }
         /******************** End Private Methods ********************/
-
-        
+                                                                      
         return $( this );
         
     }
