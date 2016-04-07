@@ -14,12 +14,12 @@ First, it was amazing [tutorial from Janko][1]. Unfortunately it hasn't code rep
 
 Second, it was inherited [tutorial from iFadey][2]. As for now, breadcrumbs is optional and plugin uses [Validation Engine][3] for step validation. It is not hosted on public repo too.
 
-I'd like to make it neat, replace hardcoded things to callbacks and options. And drop it to github with couple of examples.
+I'd like to make it neat, replace hardcoded things to callbacks and options. And drop it to github with couple of examples.  
 
 
 ### Sample code
 
-I prefer to use [jQuery Validation][4] plugin and see progress as "percentage line". In my version you can do something like that:
+To use [jQuery Validation][4] plugin and see progress as growing color bar, do something like that:
 
 ```js
 var $signupForm = $( '#SignupForm' );
@@ -51,9 +51,9 @@ $signupForm.formToWizard({
 
 ### Live examples in jsfiddle
 
-- [example 1](https://jsfiddle.net/artoodetoo/m7rmgvfy/embedded/result/)
-- [example 2](https://jsfiddle.net/artoodetoo/yga9sjwa/embedded/result/)
-- [example 3](https://jsfiddle.net/artoodetoo/r67b1jkb/embedded/result/)
+- [example 1](https://jsfiddle.net/artoodetoo/m7rmgvfy/embedded/result/) is Junko's: progress as step list, no validation
+- [example 2](https://jsfiddle.net/artoodetoo/yga9sjwa/embedded/result/) is iFadey's: progress like breadcrubms, Validate Engine plugin 
+- [example 3](https://jsfiddle.net/artoodetoo/r67b1jkb/embedded/result/) is mine: progress via callback as color bar, Validation plugin
 
 
 [1]: http://www.jankoatwarpspeed.com/turn-any-webform-into-a-powerful-wizard-with-jquery-formtowizard-plugin/
