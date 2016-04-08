@@ -1,15 +1,18 @@
 /*
-   Form To Wizard https://github.com/artoodetoo/formToWizard
-   Free to use under MIT license.
+ Form To Wizard https://github.com/artoodetoo/formToWizard
+ Free to use under MIT license.
 
-   Originally created by Janko.
-   Featured by iFadey.
-   Polishing by artoodetoo.
+ Originally created by Janko.
+ Featured by iFadey.
+ Polishing by artoodetoo.
 
-*/
+ */
 
 (function($) {
     $.fn.formToWizard = function( options, cmdParam1 ) {
+        // Stop when selector found nothing!
+        if (this.length == 0) return this;
+
         if( typeof options !== 'string' ) {
             options = $.extend({
                 submitButton:       '',
@@ -25,29 +28,22 @@
                 prevBtnClass:       'btn prev'
             }, options);
         }
-        
-        var element = this
-          , steps = $( element ).find( "fieldset" )
-          , count = steps.size()
-          , submmitButtonName = "#" + options.submitButton
-          , commands = null;
-        
-        
-        if( typeof options !== 'string' ) {
-            //hide submit button initially
-            //$(submmitButtonName).hide();
-            setTimeout(function () {
-                $(submmitButtonName).addClass('next').detach().appendTo("#step" + (steps.length - 1) + "commands");
-            }, 500);
 
-            
+        var element = this
+            , steps = $( element ).find( "fieldset" )
+            , count = steps.size()
+            , submmitButtonName = "#" + options.submitButton
+            , commands = null;
+
+
+        if( typeof options !== 'string' ) {
             //assign options to current/selected form (element)
             $( element ).data( 'options', options );
-            
+
             /**************** Validate Options ********************/
             if( typeof( options.validateBeforeNext ) !== "function" )
                 options.validateBeforeNext = function() { return true; };
-            
+
             if( options.showProgress && typeof(options.progress) !== "function") {
                 if( options.showStepNo )
                     $(element).before("<ul id='steps' class='steps'></ul>");
@@ -55,8 +51,8 @@
                     $(element).before("<ul id='steps' class='steps breadcrumb'></ul>");
             }
             /************** End Validate Options ******************/
-            
-            
+
+
             steps.each(function(i) {
                 $(this).wrap('<div id="step' + i + '" class="stepDetails"></div>');
                 $(this).append('<p id="step' + i + 'commands" class="commands"></p>');
@@ -67,7 +63,7 @@
                     else
                         $("#steps").append("<li id='stepDesc" + i + "'>" + $(this).find("legend").html() + "</li>");
                 }
-                
+
                 if (i == 0) {
                     createNextButton(i);
                     selectStep(i);
@@ -75,6 +71,8 @@
                 else if (i == count - 1) {
                     $("#step" + i).hide();
                     createPrevButton(i);
+                    // move submit button to the last step
+                    $(submmitButtonName).addClass('next').detach().appendTo("#step" + i + "commands");
                 }
                 else {
                     $("#step" + i).hide();
@@ -82,20 +80,20 @@
                     createNextButton(i);
                 }
             });
-            
+
         } else if( typeof options === 'string' ) {
             var cmd = options;
-            
+
             initCommands();
-            
+
             if( typeof commands[ cmd ] === 'function' ) {
                 commands[ cmd ]( cmdParam1 );
             } else {
                 throw cmd + ' is invalid command!';
             }
         }
-        
-        
+
+
         /******************** Command Methods ********************/
         function initCommands() {
             //restore options object from form element
@@ -104,11 +102,11 @@
             commands = {
                 GotoStep: function( stepNo ) {
                     var stepName = "step" + (--stepNo);
-                    
+
                     if( $( '#' + stepName )[ 0 ] === undefined ) {
                         throw 'Step No ' + stepNo + ' not found!';
                     }
-                    
+
                     if( $( '#' + stepName ).css( 'display' ) === 'none' ) {
                         $( element ).find( '.stepDetails' ).hide();
                         $( '#' + stepName ).show();
@@ -124,14 +122,14 @@
             };
         }
         /******************** End Command Methods ********************/
-        
-        
+
+
         /******************** Private Methods ********************/
         function createPrevButton(i) {
             var stepName = 'step' + i;
             $('#' + stepName + 'commands').append(
-                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Prev" class="' + options.prevBtnClass + '">' + 
-                options.prevBtnName + 
+                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Prev" class="' + options.prevBtnClass + '">' +
+                options.prevBtnName +
                 '</' + options.buttonTag + '>'
             );
 
@@ -146,8 +144,8 @@
         function createNextButton(i) {
             var stepName = 'step' + i;
             $('#' + stepName + 'commands').append(
-                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Next" class="' + options.nextBtnClass + '">' + 
-                options.nextBtnName + 
+                '<' + options.buttonTag + ' href="#" id="' + stepName + 'Next" class="' + options.nextBtnClass + '">' +
+                options.nextBtnName +
                 '</' + options.buttonTag + '>');
 
             $("#" + stepName + "Next").bind( "click", function(e) {
@@ -157,7 +155,7 @@
                     //if (i + 2 == count)
                     selectStep(i + 1);
                 }
-                
+
                 return false;
             });
         }
@@ -175,8 +173,8 @@
             }
         }
         /******************** End Private Methods ********************/
-                                                                      
-        return $( this );
-        
+
+        return this;
+
     }
 })(jQuery);
