@@ -26,7 +26,13 @@
         $( function() {
             var $signupForm = $( '#SignupForm' );
             
-            $signupForm.validate({errorElement: 'em'});
+            $signupForm.validate({
+                errorElement: 'em',
+                submitHandler: function (form) { 
+                    alert('submitted');
+                    form.submit();
+                }
+            });
             
             $signupForm.formToWizard({
                 submitButton: 'SaveAccount',
@@ -56,16 +62,16 @@
 
     <div id='progress'><div id='progress-complete'></div></div>
 
-    <form id="SignupForm" action="">
+    <form id="SignupForm" action="" method="post">
         <fieldset>
             <legend>Account information</legend>
             <div class="form-group">
             <label for="Name">Name</label>
-            <input id="Name" type="text" class="form-control" required />
+            <input id="Name" name="name" type="text" class="form-control" required />
             </div>
             <div class="form-group">
             <label for="Email">Email</label>
-            <input id="Email" type="email" class="form-control" required />
+            <input id="Email" name="email" type="email" class="form-control" required />
             </div>
             <div class="form-group">
             <label for="Password">Password</label>
@@ -77,7 +83,7 @@
             <legend>Company information</legend>
             <div class="form-group">
             <label for="CompanyName">Company Name</label>
-            <input id="CompanyName" type="text" class="form-control" required />
+            <input id="CompanyName" name="company-name" type="text" class="form-control" required />
             </div>
             <div class="form-group">
             <label for="Website">Website</label>
@@ -93,11 +99,11 @@
             <legend>Billing information</legend>
             <div class="form-group">
             <label for="NameOnCard" class="col-sm-2 control-label">Name on Card</label>
-            <div class="col-sm-10"><input id="NameOnCard" type="text" class="form-control" /></div>
+            <div class="col-sm-10"><input id="NameOnCard" type="text" class="form-control" name="name-on-card" required /></div>
             </div>
             <div class="form-group">
             <label for="CardNumber" class="col-sm-2 control-label">Card Number</label>
-            <div class="col-sm-10"><input id="CardNumber" type="text" class="form-control" /></div>
+            <div class="col-sm-10"><input id="CardNumber" type="text" class="form-control" name="card-number" required /></div>
             </div>
             <div class="form-group">
             <label for="CreditcardMonth" class="col-sm-2 control-label">Expiration</label>
@@ -390,9 +396,9 @@
             </select>
             </div>
         </fieldset>
-        <p>
-            <button id="SaveAccount" class="btn btn-primary submit">Submit form</button>
-        </p>
+
+        <button id="SaveAccount" type="submit" class="btn btn-primary submit">Submit form</button>
+
     </form>
 
 </div></div>
