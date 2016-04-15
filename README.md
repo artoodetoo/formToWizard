@@ -51,8 +51,8 @@ $signupForm.formToWizard({
 
 ### Live examples in jsfiddle
 
-- [example 1](https://jsfiddle.net/artoodetoo/m7rmgvfy/embedded/result/) is Junko's: progress as step list, no validation
-- [example 2](https://jsfiddle.net/artoodetoo/yga9sjwa/embedded/result/) is iFadey's: progress like breadcrubms, Validate Engine plugin 
+- [example 1](https://jsfiddle.net/artoodetoo/ej13317f/embedded/result/) is Junko's: progress as step list, no validation
+- [example 2](https://jsfiddle.net/artoodetoo/roct3rcf/embedded/result/) is iFadey's: progress like breadcrubms, Validate Engine plugin 
 - [example 3](https://jsfiddle.net/artoodetoo/r67b1jkb/embedded/result/) is mine: progress via callback as color bar, Validation plugin
 
 
