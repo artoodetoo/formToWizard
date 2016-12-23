@@ -31,7 +31,7 @@
 
         var element = this
             , steps = $( element ).find( "fieldset" )
-            , count = steps.size()
+            , count = steps.length
             , submmitButtonName = "#" + options.submitButton
             , commands = null;
 
