@@ -76,8 +76,8 @@
                 }
                 else {
                     $("#step" + i).hide();
-                    createPrevButton(i);
                     createNextButton(i);
+                    createPrevButton(i);
                 }
             });
 
