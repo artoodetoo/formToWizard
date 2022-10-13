@@ -9,7 +9,7 @@
  */
 
 (function($) {
-    $.fn.formToWizard = function( options, cmdParam1 ) {
+    $.fn.formToWizard = function( options, cmdParam1, cmdParam2 ) {
         // Stop when selector found nothing!
         if (this.length == 0) return this;
 
@@ -87,7 +87,7 @@
             initCommands();
 
             if( typeof commands[ cmd ] === 'function' ) {
-                commands[ cmd ]( cmdParam1 );
+                commands[ cmd ]( cmdParam1, cmdParam2 );
             } else {
                 throw cmd + ' is invalid command!';
             }
@@ -100,17 +100,20 @@
             options = $( element ).data( 'options' );
 
             commands = {
-                GotoStep: function( stepNo ) {
+                GotoStep: function( stepNo, currentStep ) {
                     var stepName = "step" + (--stepNo);
 
                     if( $( '#' + stepName )[ 0 ] === undefined ) {
                         throw 'Step No ' + stepNo + ' not found!';
                     }
 
-                    if( $( '#' + stepName ).css( 'display' ) === 'none' ) {
-                        $( element ).find( '.stepDetails' ).hide();
-                        $( '#' + stepName ).show();
-                        selectStep( stepNo );
+                    if ( currentStep !== undefined || options.validateBeforeNext(element, $("#" + currentStep)) === true ) {
+
+                        if( $( '#' + stepName ).css( 'display' ) === 'none' ) {
+                            $( element ).find( '.stepDetails' ).hide();
+                            $( '#' + stepName ).show();
+                            selectStep( stepNo );
+                        }
                     }
                 },
                 NextStep: function() {
